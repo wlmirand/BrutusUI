@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="value" format="string|boolean|integer|reference"/>
+
+    <declare-styleable name="BrutusUIGeneric">
+        <attr name="title" format="string" />
+        <attr name="summary" format="string" />
+        <attr name="value"/>
+    </declare-styleable>
+
+    <declare-styleable name="BrutusUIEditText">
+        <attr name="isNumber" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="BrutusUIRadioGroup">
+        <attr name="optValues" format="reference" />
+        <attr name="optTexts" format="reference" />
+    </declare-styleable>
+
+</resources>
