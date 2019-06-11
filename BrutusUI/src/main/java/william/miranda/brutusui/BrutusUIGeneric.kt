@@ -3,64 +3,73 @@ package william.miranda.brutusui
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.LinearLayout
-import android.widget.TextView
+import androidx.databinding.Observable
+import androidx.databinding.ObservableField
 
+/**
+ * Generic View Class that holds value of type T
+ */
 abstract class BrutusUIGeneric<T>(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     /**
-     * Valores do titulo e summary
+     * Values for title and summary
      */
-    var title: String? = null
-    var summary: String? = null
+    protected val title = ObservableField<String>()
+    protected val summary = ObservableField<String>()
 
     /**
-     * Valor do campo... por default a gente atualiza o summary
+     * Store the default Summary Value
      */
-    open var value: T? = null
-        set(newValue) {
-            field = newValue
-            updateSummary()
-            changeListener(newValue)
-        }
+    private val defaultSummary: String
 
     /**
-     * Change Listener, para podermos notificar quando o valor muda
+     * Field value
      */
-    var changeListener: (T?) -> Unit = {}
+    val value: ObservableField<T> = ObservableField<T>().apply {
+        this.addOnPropertyChangedCallback(
+                object : Observable.OnPropertyChangedCallback() {
+                    override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                        //Render the Summary
+                        renderSummary()
+
+                        //Call the Listener
+                        changeListener?.invoke( (sender as ObservableField<T>).get() )
+                    }
+                }
+        )
+    }
 
     /**
-     * Metodo para "renderizar" o objeto
+     * Change Listener, to notify someone that is interested to know if the value was changed
      */
-    open var renderFunction: (T) -> String = { it.toString() }
+    open var changeListener: ((newValue: T?) -> Unit)? = null
 
     /**
-     * Apos rodar o construtor, roda o bloco init
+     * Method to convert the value to String
+     */
+    open var renderFunction: (T?) -> String? = { it?.toString() }
+
+    /**
+     * Init block
      */
     init {
-        //obtem os elementos do XML e seta o titulo e summary
+        //Get values from XML and fill the properties with the values
         with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIGeneric)) {
-            title = getText(R.styleable.BrutusUIGeneric_title) as String?
-            summary = getText(R.styleable.BrutusUIGeneric_summary) as String?
+            title.set(getText(R.styleable.BrutusUIGeneric_title) as String)
+
+            defaultSummary = getText(R.styleable.BrutusUIGeneric_summary) as String
+            summary.set(defaultSummary)
+
             recycle()
         }
     }
 
     /**
-     * Ao terminar de inflar, seta o corpo
+     * Method to update the Summary
+     * If we have a valid value, put the value
+     * If not, put the Summary.
      */
-    override fun onFinishInflate() {
-        super.onFinishInflate()
-
-        //seta o titulo e o sumario caso existam
-        findViewById<TextView>(R.id.title)?.text = title
-        findViewById<TextView>(R.id.summary)?.text = summary
-    }
-
-    /**
-     * Metodo para atualizar o Summary de acordo com o valor
-     */
-    fun updateSummary() {
-        findViewById<TextView>(R.id.summary)?.text =
-                value?.takeIf { it.toString().isNotEmpty() }?.let { renderFunction(it) } ?: summary
+    internal open fun renderSummary() {
+        summary.set(renderFunction(value.get()) ?: defaultSummary)
     }
 }

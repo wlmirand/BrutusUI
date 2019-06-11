@@ -3,106 +3,89 @@ package william.miranda.brutusui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.CompoundButton
-import android.widget.ToggleButton
-import java.util.*
+import william.miranda.brutusui.databinding.BrutusuiDayOfWeekBinding
 
-class BrutusUIDayOfWeek(context: Context, attrs: AttributeSet) : BrutusUIGeneric<BooleanArray>(context, attrs) {
+/**
+ * Class to display a Picker for Day of Week
+ */
+class BrutusUIDayOfWeek(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Int>(context, attrs) {
 
-    /**
-     * Faz override para inicializar o array
-     */
-    override var value: BooleanArray? = BooleanArray(7) //inicialmente cria vazio
-    set(newValue) {
-        //se eh valido, atribui
-        if (newValue != null) {
-            field = newValue
-        } else {//senao vazio
-            value = BooleanArray(7)
-        }
+    companion object {
+        //Masks for each day
+        const val SUNDAY = 1
+        const val MONDAY = SUNDAY.shl(1)
+        const val TUESDAY = MONDAY.shl(1)
+        const val WEDNESDAY = TUESDAY.shl(1)
+        const val THURSDAY = WEDNESDAY.shl(1)
+        const val FRIDAY = THURSDAY.shl(1)
+        const val SATURDAY = FRIDAY.shl(1)
 
-        //Atualiza a UI para representar o valor
-        updateButtons()
+        /**
+         * Get if a given button should be enabled
+         */
+        @JvmStatic
+        fun isEnabled(position: Int, intValue: Int) = getBooleanArray(intValue)[position]
 
-        //Invoca o Listener
-        changeListener(newValue)
-    }
-
-    /**
-     * Views do Layout
-     */
-    private val btDomingo by lazy { findViewById<ToggleButton>(R.id.btDomingo) }
-    private val btSegunda by lazy { findViewById<ToggleButton>(R.id.btSegunda) }
-    private val btTerca by lazy { findViewById<ToggleButton>(R.id.btTerca) }
-    private val btQuarta by lazy { findViewById<ToggleButton>(R.id.btQuarta) }
-    private val btQuinta by lazy { findViewById<ToggleButton>(R.id.btQuinta) }
-    private val btSexta by lazy { findViewById<ToggleButton>(R.id.btSexta) }
-    private val btSabado by lazy { findViewById<ToggleButton>(R.id.btSabado) }
-
-    /**
-     * Listener compartilhado por todos botoes
-     */
-    val listener: (cb: CompoundButton, status: Boolean) -> Unit = {cb: CompoundButton, status: Boolean ->
-        val index = getIndexFromButton(cb.id)
-        index?.let { value?.set(it, status) }
-    }
-
-    init {
-        LayoutInflater.from(context)
-                .inflate(R.layout.brutusui_day_of_week, this)
-
-        btDomingo.setOnCheckedChangeListener(listener)
-        btSegunda.setOnCheckedChangeListener(listener)
-        btTerca.setOnCheckedChangeListener(listener)
-        btQuarta.setOnCheckedChangeListener(listener)
-        btQuinta.setOnCheckedChangeListener(listener)
-        btSexta.setOnCheckedChangeListener(listener)
-        btSabado.setOnCheckedChangeListener(listener)
-    }
-
-    /**
-     * Atualiza os botoes da UI
-     */
-    private fun updateButtons() {
-        value?.let {
-            var i = 0
-            for(bool in it) {
-                getButtonFromIndex(i++)?.isChecked = bool
+        /**
+         * Get the BooleanArray from the Int Value
+         */
+        fun getBooleanArray(value: Int) : BooleanArray {
+            return BooleanArray(7).apply {
+                this[0] = value and SUNDAY != 0
+                this[1] = value and MONDAY != 0
+                this[2] = value and TUESDAY != 0
+                this[3] = value and WEDNESDAY != 0
+                this[4] = value and THURSDAY != 0
+                this[5] = value and FRIDAY != 0
+                this[6] = value and SATURDAY != 0
             }
         }
+
+        /**
+         * Get the Int Value from the BooleanArray
+         */
+        fun getIntValue(array: BooleanArray) : Int {
+
+            //Start with zero
+            var result = 0
+
+            //Foreach
+            for (i in 0 until array.size) {
+                //Get the Weight
+                val weight = Math.pow(2.0, i.toDouble()).toInt()
+
+                //Multiply to the value and add to the result
+                result += array[i].toInt() * weight
+            }
+
+            return result
+        }
+
+        /**
+         * Extension Function for Boolean Conversion
+         */
+        private fun Boolean.toInt() = if (this) 1 else 0
     }
 
     /**
-     * Dado o indice, obtem o botao
+     * Render Function
      */
-    private fun getButtonFromIndex(index: Int): CompoundButton? {
-        return when(index+1) {
-            Calendar.SUNDAY -> btDomingo
-            Calendar.MONDAY -> btSegunda
-            Calendar.TUESDAY -> btTerca
-            Calendar.WEDNESDAY -> btQuarta
-            Calendar.THURSDAY -> btQuinta
-            Calendar.FRIDAY -> btSexta
-            Calendar.SATURDAY -> btSabado
-            else -> null
-        }
-    }
+    override var renderFunction: (Int?) -> String? = { summary.get().toString() }
 
-    /**
-     * Dado o botao, obtem o indice
-     */
-    private fun getIndexFromButton(resId: Int): Int? {
-        val ret = when (resId) {
-            R.id.btDomingo -> Calendar.SUNDAY
-            R.id.btSegunda -> Calendar.MONDAY
-            R.id.btTerca -> Calendar.TUESDAY
-            R.id.btQuarta -> Calendar.WEDNESDAY
-            R.id.btQuinta -> Calendar.THURSDAY
-            R.id.btSexta -> Calendar.FRIDAY
-            R.id.btSabado -> Calendar.SATURDAY
-            else -> null
+    init {
+        //Get the value from XML and set to the Field
+        with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIGeneric)) {
+            //Set the Value
+            value.set(getInt(R.styleable.BrutusUIGeneric_value, 0))
+
+            recycle()
         }
 
-        return ret?.minus(1)
+        //Inflate the Layout
+        BrutusuiDayOfWeekBinding.inflate(LayoutInflater.from(context), this, true).run {
+            title = this@BrutusUIDayOfWeek.title
+            summary = this@BrutusUIDayOfWeek.summary
+            value = this@BrutusUIDayOfWeek.value
+        }
     }
 }

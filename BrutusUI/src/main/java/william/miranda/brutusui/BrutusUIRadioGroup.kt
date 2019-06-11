@@ -1,116 +1,119 @@
 package william.miranda.brutusui
 
 import android.content.Context
-import android.support.v7.app.AlertDialog
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
+import william.miranda.brutusui.databinding.BrutusuiGenericBinding
 
-class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Int>(context, attrs) {
+/**
+ * Class to display a List of items to be chosen
+ */
+class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Pair<Int, String>>(context, attrs) {
 
     /**
-     * Aki, atualiza para o Label e nao para o valor
+     * Map that contains the Values -> Strings
      */
-    override var value: Int? = null
-        set(newValue) {
-            //assigna o valor
-            field = newValue
+    private val map = mutableMapOf<Int, String>()
 
-            //na inicializacao, chamaremos o set direto, entao precisa atualizar o selected
-            selected = getIndexFromValue(newValue)
+    /**
+     * Render Function to put the String in the Summary
+     */
+    override var renderFunction: (Pair<Int, String>?) -> String? = {
+        value.get()?.second
+    }
 
-            //mostra o texto do indice selecionado
-            options?.let { findViewById<TextView>(R.id.summary).text = it[selected] }
+    /**
+     * Holds the Selected Pair to be saved if the user press OK
+     */
+    private var selectedPair: Pair<Int, String>? = null
 
-            changeListener(newValue)
+    init {
+        //Inflate the Layout
+        BrutusuiGenericBinding.inflate(LayoutInflater.from(context), this, true).run {
+            title = this@BrutusUIRadioGroup.title
+            summary = this@BrutusUIRadioGroup.summary
         }
 
-    /**
-     * Arrays de chaves -> valores para popular
-     */
-    private var options: Array<CharSequence>? = null
-    private var values: IntArray? = null
-
-    /**
-     * Indice do elemento selecionado
-     */
-    private var selected: Int = 0
-
-    /**
-     * Bloco init, para inicializar os dados a serem mostrados
-     */
-    init {
-        LayoutInflater.from(context)
-                .inflate(R.layout.brutusui_generic, this)
-
-        // Obtem os elementos do XML...
-        // Para string array, tem metodo pronto
-        // Para Int, precisamos obter o ResID e entao obter o array
+        // Get stuff from the XML
+        // For StringArray we can read it directly
+        // For Ins, we need to get the ResourceID and then Get the Array itself
         with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIRadioGroup)) {
-            options = getTextArray(R.styleable.BrutusUIRadioGroup_optTexts)
+            //Get the String Array
+            val textArray = getTextArray(R.styleable.BrutusUIRadioGroup_optTexts)
+
+            //Get the IntArray Res ID and then the Array itself
             val valuesResId = getResourceId(R.styleable.BrutusUIRadioGroup_optValues, 0)
-            values = resources.getIntArray(valuesResId)
+            val valuesArray = resources.getIntArray(valuesResId)
+
+            //Now fill the map
+            for (i in 0 until textArray.size) {
+                map[valuesArray[i]] = textArray[i].toString()
+            }
+
             recycle()
         }
 
-        //Agora carrega o valor default caso tenha sido passado
+        //Now get the default value if passed
         with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIGeneric)) {
-            //se existe, carregamos
-            if (hasValue(R.styleable.BrutusUIGeneric_value)) {
-                //carrega o valor
-                value = getInt(R.styleable.BrutusUIGeneric_value, -1)
-            }
+            //if exists, Get the passed value
+            val newValue = getInt(R.styleable.BrutusUIGeneric_value, -1)
+
+            //Set it
+            value.set(getPairFromValue(newValue))
 
             recycle()
         }
     }
 
     /**
-     * Adiciona o onClick ao inflar as Views
+     * When Views are ready
      */
     override fun onFinishInflate() {
         super.onFinishInflate()
 
-        //seta o click na view inteira
+        //Set ClickListener for the View
         this.setOnClickListener { showDialog() }
-
-        //seta o valor
-        values?.let {
-            if (selected >= 0) {
-                value = it[selected]
-            }
-        }
     }
 
     /**
-     * Mostra a dialog
+     * Show the Dialog
      */
     private fun showDialog() {
+        val selectedIndex = getSelectedIndex()
+
         with(AlertDialog.Builder(context)) {
-            setTitle(title)
-            setSingleChoiceItems(options, selected) { _, which -> selected = which }
-            setPositiveButton(android.R.string.ok) { _, _ ->
-                values?.let { value = it[selected] }
+            setTitle(title.get())
+            setSingleChoiceItems(map.values.toTypedArray(), selectedIndex) { _, newIndex ->
+                //Get the Selected Pair from Index
+                selectedPair = map.toList()[newIndex]
             }
+
+            setPositiveButton(android.R.string.ok) { _, _ ->
+                //Update the Selected Pair
+                value.set(selectedPair)
+            }
+
+            //setPositiveButton(android.R.string.ok) { _, _ -> /*values?.let { value.set(it[selected]) }*/ }
             setNegativeButton(android.R.string.cancel, null)
             show()
         }
     }
 
     /**
-     * Retorna o indice a partir do valor
+     * Get the Selected Index from the Selected Pair
      */
-    private fun getIndexFromValue(newValue: Int?): Int {
-        if (newValue == null) return 0
+    private fun getSelectedIndex() = map.toList().indexOf(value.get())
 
-        var index = 0
-        values?.let {
-            for (v in it) {
-                if (v == newValue) return index
-                index++
+    /**
+     * Return the Pair from the selected Value
+     */
+    private fun getPairFromValue(newValue: Int) : Pair<Int, String>? {
+        //If valid, assign the Pair to the value
+        return newValue.takeIf { it != -1 }?.let { validValue ->
+            map[validValue]?.let {
+                Pair(validValue, it)
             }
         }
-
-        return 0
     }
 }

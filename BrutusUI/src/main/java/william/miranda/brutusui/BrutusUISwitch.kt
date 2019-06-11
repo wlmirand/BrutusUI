@@ -1,39 +1,29 @@
 package william.miranda.brutusui
 
 import android.content.Context
-import android.support.v7.widget.SwitchCompat
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import william.miranda.brutusui.databinding.BrutusuiSwitchBinding
 
 class BrutusUISwitch(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Boolean>(context, attrs) {
 
-    val checkbox by lazy { findViewById<SwitchCompat>(R.id.enabled) }
-
     /**
-     * Para este componente, apenas setamos o valor
+     * Render Function
      */
-    override var value: Boolean? = null
-    set(newValue) {
-        field = newValue
-        newValue?.let { checkbox.isChecked = it }
-        changeListener(newValue)
-    }
+    override var renderFunction: (Boolean?) -> String? = { summary.get().toString() }
 
     init {
-        LayoutInflater.from(context)
-                .inflate(R.layout.brutusui_switch, this)
-
-        //obtem os elementos do XML
-        with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIGeneric)) {
-            //Obtem o valor, caso passado
-            value = getBoolean(R.styleable.BrutusUIGeneric_value, false)
-            recycle()
+        //Inflate the Layout
+        BrutusuiSwitchBinding.inflate(LayoutInflater.from(context), this, true).run {
+            title = this@BrutusUISwitch.title
+            summary = this@BrutusUISwitch.summary
+            value = this@BrutusUISwitch.value
         }
 
-        //atualiza o valor ao fazer o toggle
-        checkbox.setOnCheckedChangeListener {
-            _, status ->
-            value = status
+        //Get the value from XML and set to the Field
+        with(context.obtainStyledAttributes(attrs, R.styleable.BrutusUIGeneric)) {
+            value.set(getBoolean(R.styleable.BrutusUIGeneric_value, false))
+            recycle()
         }
     }
 }

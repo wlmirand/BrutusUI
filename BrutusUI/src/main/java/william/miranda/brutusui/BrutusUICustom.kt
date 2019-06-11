@@ -3,6 +3,7 @@ package william.miranda.brutusui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import william.miranda.brutusui.databinding.BrutusuiGenericBinding
 
 /**
  * Classe para mostrar o layout e deixar a cargo do usuario definir o onClick
@@ -12,7 +13,10 @@ import android.view.LayoutInflater
 class BrutusUICustom<T>(context: Context, attrs: AttributeSet) : BrutusUIGeneric<T>(context, attrs) {
 
     init {
-        LayoutInflater.from(context)
-                .inflate(R.layout.brutusui_generic, this)
+        //Inflate the Layout
+        BrutusuiGenericBinding.inflate(LayoutInflater.from(context), this, true).run {
+            title = this@BrutusUICustom.title
+            summary = this@BrutusUICustom.summary
+        }
     }
 }

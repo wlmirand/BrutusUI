@@ -1,2 +1,1 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="william.miranda.brutusui" />
+<manifest package="william.miranda.brutusui" />

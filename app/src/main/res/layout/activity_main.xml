@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:showDividers="middle"
+        android:divider="@drawable/divider">
+
+    <william.miranda.brutusui.BrutusUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="The Title"
+            app:summary="The Summary"/>
+
+    <william.miranda.brutusui.BrutusUIEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="The Title"
+            app:summary="The Summary"
+            app:value="A Value Set"/>
+
+</LinearLayout>

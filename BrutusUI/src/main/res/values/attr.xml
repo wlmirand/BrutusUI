@@ -1,20 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Common value attribute -->
     <attr name="value" format="string|boolean|integer|reference"/>
 
+    <!-- Common UI attributes -->
     <declare-styleable name="BrutusUIGeneric">
         <attr name="title" format="string" />
         <attr name="summary" format="string" />
         <attr name="value"/>
     </declare-styleable>
 
+    <!-- UI attributes for EditText -->
     <declare-styleable name="BrutusUIEditText">
         <attr name="isNumber" format="boolean"/>
     </declare-styleable>
 
+    <!-- UI attributes for RadioGroup -->
     <declare-styleable name="BrutusUIRadioGroup">
         <attr name="optValues" format="reference" />
         <attr name="optTexts" format="reference" />
     </declare-styleable>
+
+    <!-- UI attributes for TimePicker -->
+    <declare-styleable name="BrutusUITimePicker">
+        <attr name="hour" format="integer" />
+        <attr name="minute" format="integer" />
+    </declare-styleable>
+
+
+    <!-- Attributes for Styling -->
+    <attr name="colorPrimary" format="reference|color" />
+    <attr name="colorPrimaryDark" format="reference|color" />
+    <attr name="colorAccent" format="reference|color" />
 
 </resources>

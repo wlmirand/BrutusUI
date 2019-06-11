@@ -1,1 +1,1 @@
-include ':BrutusUI'
+include ':app', ':brutusui'

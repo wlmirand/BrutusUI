@@ -1,0 +1,9 @@
+<resources>
+    <string name="domingo">D</string>
+    <string name="segunda">L</string>
+    <string name="terca">M</string>
+    <string name="quarta">M</string>
+    <string name="quinta">J</string>
+    <string name="sexta">V</string>
+    <string name="sabado">S</string>
+</resources>

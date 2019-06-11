@@ -1,95 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/title"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <data>
+        <import type="androidx.databinding.ObservableField" />
+        <import type="william.miranda.brutusui.BrutusUIDayOfWeek"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/summary"
-        android:textSize="15sp"
-        app:layout_constraintTop_toBottomOf="@id/title"
-        app:layout_constraintStart_toStartOf="parent"/>
+        <variable
+            name="title"
+            type="ObservableField&lt;String&gt;" />
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btDomingo"
-        android:text="@string/domingo"
-        android:textOff="@string/domingo"
-        android:textOn="@string/domingo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btSegunda"/>
+        <variable
+            name="summary"
+            type="ObservableField&lt;String&gt;" />
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btSegunda"
-        android:text="@string/segunda"
-        android:textOff="@string/segunda"
-        android:textOn="@string/segunda"
-        app:layout_constraintStart_toEndOf="@id/btDomingo"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btTerca"/>
+        <variable
+            name="value"
+            type="ObservableField&lt;Integer&gt;" />
+    </data>
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btTerca"
-        android:text="@string/terca"
-        android:textOff="@string/terca"
-        android:textOn="@string/terca"
-        app:layout_constraintStart_toEndOf="@id/btSegunda"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btQuarta"/>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btQuarta"
-        android:text="@string/quarta"
-        android:textOff="@string/quarta"
-        android:textOn="@string/quarta"
-        app:layout_constraintStart_toEndOf="@id/btTerca"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btQuinta"/>
+        <TextView
+            android:id="@+id/titleView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ title }"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btQuinta"
-        android:text="@string/quinta"
-        android:textOff="@string/quinta"
-        android:textOn="@string/quinta"
-        app:layout_constraintStart_toEndOf="@id/btQuarta"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btSexta"/>
+        <TextView
+            android:id="@+id/summaryView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ summary }"
+            android:textSize="15sp"/>
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btSexta"
-        android:text="@string/sexta"
-        android:textOff="@string/sexta"
-        android:textOn="@string/sexta"
-        app:layout_constraintStart_toEndOf="@id/btQuinta"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toStartOf="@id/btSabado"/>
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <ToggleButton
-        style="@style/ToggleButton"
-        android:id="@+id/btSabado"
-        android:text="@string/sabado"
-        android:textOff="@string/sabado"
-        android:textOn="@string/sabado"
-        app:layout_constraintStart_toEndOf="@id/btSexta"
-        app:layout_constraintTop_toBottomOf="@id/summary"
-        app:layout_constraintEnd_toEndOf="parent"/>
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btDomingo"
+                android:text="@string/domingo"
+                android:textOff="@string/domingo"
+                android:textOn="@string/domingo"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(0, value) }"/>
 
-</android.support.constraint.ConstraintLayout>
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btSegunda"
+                android:text="@string/segunda"
+                android:textOff="@string/segunda"
+                android:textOn="@string/segunda"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(1, value) }"/>
+
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btTerca"
+                android:text="@string/terca"
+                android:textOff="@string/terca"
+                android:textOn="@string/terca"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(2, value) }"/>
+
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btQuarta"
+                android:text="@string/quarta"
+                android:textOff="@string/quarta"
+                android:textOn="@string/quarta"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(3, value) }"/>
+
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btQuinta"
+                android:text="@string/quinta"
+                android:textOff="@string/quinta"
+                android:textOn="@string/quinta"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(4, value) }"/>
+
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btSexta"
+                android:text="@string/sexta"
+                android:textOff="@string/sexta"
+                android:textOn="@string/sexta"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(5, value) }"/>
+
+            <ToggleButton
+                style="@style/ToggleButton"
+                android:id="@+id/btSabado"
+                android:text="@string/sabado"
+                android:textOff="@string/sabado"
+                android:textOn="@string/sabado"
+                android:checked="@{ BrutusUIDayOfWeek.isEnabled(6, value) }"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>
