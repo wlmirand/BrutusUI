@@ -21,18 +21,6 @@
             app:summary="Another Summary"
             app:value="A Value Set"/>
 
-    <william.miranda.brutusui.BrutusUIDayOfWeek
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="DayOfWeek Title"
-            app:summary="DayOfWeek Summary"/>
-
-    <william.miranda.brutusui.BrutusUIDatePicker
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="DatePicker Title"
-            app:summary="DatePicker Summary"/>
-
     <william.miranda.brutusui.BrutusUIEditInt
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -44,5 +32,24 @@
             android:layout_height="wrap_content"
             app:title="EditFloat Title"
             app:summary="EditFloat Summary"/>
+
+    <william.miranda.brutusui.BrutusUIDayOfWeek
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="DayOfWeek Title"
+            app:summary="DayOfWeek Summary"/>
+
+    <william.miranda.brutusui.BrutusUIDatePicker
+            android:id="@+id/datePicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="DatePicker Title"
+            app:summary="DatePicker Summary"/>
+
+    <william.miranda.brutusui.BrutusUITimePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="TimePicker Title"
+            app:summary="TimePicker Summary"/>
 
 </LinearLayout>
