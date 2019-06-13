@@ -28,6 +28,13 @@
         <attr name="minute" format="integer" />
     </declare-styleable>
 
+    <!-- UI attributes for DatePicker -->
+    <declare-styleable name="BrutusUIDatePicker">
+        <attr name="day" format="integer" />
+        <attr name="month" format="integer" />
+        <attr name="year" format="integer" />
+    </declare-styleable>
+
 
     <!-- Attributes for Styling -->
     <attr name="colorPrimary" format="reference|color" />

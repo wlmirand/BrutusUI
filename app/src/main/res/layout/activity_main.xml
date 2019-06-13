@@ -11,14 +11,26 @@
     <william.miranda.brutusui.BrutusUIEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="The Title"
-            app:summary="The Summary"/>
+            app:title="EditText Title"
+            app:summary="EditText Summary"/>
 
     <william.miranda.brutusui.BrutusUIEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:title="The Title"
-            app:summary="The Summary"
+            app:title="Another Title"
+            app:summary="Another Summary"
             app:value="A Value Set"/>
+
+    <william.miranda.brutusui.BrutusUIDayOfWeek
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="DayOfWeek Title"
+            app:summary="DayOfWeek Summary"/>
+
+    <william.miranda.brutusui.BrutusUIDatePicker
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="DatePicker Title"
+            app:summary="DatePicker Summary"/>
 
 </LinearLayout>
