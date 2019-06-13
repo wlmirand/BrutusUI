@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">BrutusUI</string>
-
     <string name="domingo">S</string>
     <string name="segunda">M</string>
     <string name="terca">T</string>
