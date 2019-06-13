@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.TimePicker
 import william.miranda.brutusui.databinding.BrutusuiGenericBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Pair<Int, Int>>(context, attrs) {
@@ -30,9 +29,9 @@ class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneri
     /**
      * Render the time
      */
-    override var renderFunction: (Pair<Int, Int>?) -> String? = {
+    override var renderFunction: (Pair<Int, Int>) -> String? = {
 
-        it?.takeIf { it.first != -1 && it.second != -1 }?.let {
+        it.takeIf { it.first != -1 && it.second != -1 }?.let {
             val date = Calendar.getInstance().run {
                 set(Calendar.HOUR_OF_DAY, it.first)
                 set(Calendar.MINUTE, it.second)
@@ -56,12 +55,7 @@ class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             //if exists, loads
             val hour = getInt(R.styleable.BrutusUITimePicker_hour, -1)
             val minute = getInt(R.styleable.BrutusUITimePicker_minute, -1)
-            val format = getString(R.styleable.BrutusUITimePicker_timeFormat)
             recycle()
-
-            if (format != null) {
-                timeFormatter = SimpleDateFormat(format)
-            }
 
             value.set(Pair(hour, minute))
         }

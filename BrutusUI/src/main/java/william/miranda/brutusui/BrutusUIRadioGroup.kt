@@ -19,7 +19,7 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
     /**
      * Render Function to put the String in the Summary
      */
-    override var renderFunction: (Pair<Int, String>?) -> String? = {
+    override var renderFunction: (Pair<Int, String>) -> String? = {
         value.get()?.second
     }
 

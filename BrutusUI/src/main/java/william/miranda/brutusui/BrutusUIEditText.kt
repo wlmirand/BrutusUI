@@ -16,7 +16,7 @@ class BrutusUIEditText(context: Context, attrs: AttributeSet) : BrutusUIGeneric<
     /**
      * Method to convert the value to String
      */
-    override var renderFunction: (String?) -> String? = { it?.takeIf { it.isNotEmpty() } }
+    override var renderFunction: (String) -> String? = { it?.takeIf { it.isNotEmpty() } }
 
     init {
         //Inflate the Layout

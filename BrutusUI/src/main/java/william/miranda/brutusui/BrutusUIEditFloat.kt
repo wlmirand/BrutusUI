@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import william.miranda.brutusui.databinding.BrutusuiGenericBinding
+import java.text.DecimalFormat
 
 /**
  * Class to store Integer values
@@ -16,7 +17,16 @@ class BrutusUIEditFloat(context: Context, attrs: AttributeSet) : BrutusUIGeneric
     /**
      * Render Function
      */
-    override var renderFunction: (Float?) -> String? = { it?.toString() }
+    override var renderFunction: (Float) -> String? = { numberFormatter.format(it) }
+
+    /**
+     * Number Formatter
+     */
+    var numberFormatter = DecimalFormat.getNumberInstance()
+        set(newFormatter) {
+            field = newFormatter
+            renderSummary()
+        }
 
     init {
         //Inflate the Layout
@@ -30,7 +40,6 @@ class BrutusUIEditFloat(context: Context, attrs: AttributeSet) : BrutusUIGeneric
             if (hasValue(R.styleable.BrutusUIGeneric_value)) {
                 value.set(getFloat(R.styleable.BrutusUIGeneric_value, 0f))
             }
-
             recycle()
         }
     }

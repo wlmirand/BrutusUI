@@ -70,7 +70,7 @@ class BrutusUIDayOfWeek(context: Context, attrs: AttributeSet) : BrutusUIGeneric
     /**
      * Render Function
      */
-    override var renderFunction: (Int?) -> String? = { summary.get().toString() }
+    override var renderFunction: (Int) -> String? = { summary.get().toString() }
 
     init {
         //Get the value from XML and set to the Field

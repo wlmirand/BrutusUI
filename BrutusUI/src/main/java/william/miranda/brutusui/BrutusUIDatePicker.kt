@@ -6,7 +6,6 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.DatePicker
 import william.miranda.brutusui.databinding.BrutusuiGenericBinding
-import java.text.SimpleDateFormat
 import java.util.*
 
 class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
@@ -31,9 +30,9 @@ class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
     /**
      * Render the time
      */
-    override var renderFunction: (Triple<Int, Int, Int>?) -> String? = {
+    override var renderFunction: (Triple<Int, Int, Int>) -> String? = {
 
-        it?.takeIf { it.first != -1 && it.second != -1 && it.third != -1 }?.let {
+        it.takeIf { it.first != -1 && it.second != -1 && it.third != -1 }?.let {
             val date = Calendar.getInstance().run {
                 set(Calendar.YEAR, it.first)
                 set(Calendar.MONTH, it.second)
@@ -61,12 +60,7 @@ class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
             val day = getInt(R.styleable.BrutusUIDatePicker_day, -1)
             val month = getInt(R.styleable.BrutusUIDatePicker_month, -1)
             val year = getInt(R.styleable.BrutusUIDatePicker_year, -1)
-            val format = getString(R.styleable.BrutusUIDatePicker_dateFormat)
             recycle()
-
-            if (format != null) {
-                dateFormatter = SimpleDateFormat(format)
-            }
 
             //If values are not set, nothing to do
             if (day == -1 || month == -1 || year == -1) return@with

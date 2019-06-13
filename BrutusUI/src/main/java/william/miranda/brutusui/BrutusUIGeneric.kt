@@ -47,7 +47,7 @@ abstract class BrutusUIGeneric<T>(context: Context, attrs: AttributeSet) : Linea
     /**
      * Method to convert the value to String
      */
-    open var renderFunction: (T?) -> String? = { it?.toString() }
+    open var renderFunction: (T) -> String? = { it.toString() }
 
     /**
      * Init block
@@ -70,6 +70,6 @@ abstract class BrutusUIGeneric<T>(context: Context, attrs: AttributeSet) : Linea
      * If not, put the Summary.
      */
     internal open fun renderSummary() {
-        summary.set(renderFunction(value.get()) ?: defaultSummary)
+        summary.set( value.get()?.let { renderFunction(it) } ?: defaultSummary)
     }
 }

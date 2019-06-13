@@ -10,7 +10,7 @@ class BrutusUISwitch(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Bo
     /**
      * Render Function
      */
-    override var renderFunction: (Boolean?) -> String? = { summary.get().toString() }
+    override var renderFunction: (Boolean) -> String? = { summary.get().toString() }
 
     init {
         //Inflate the Layout
