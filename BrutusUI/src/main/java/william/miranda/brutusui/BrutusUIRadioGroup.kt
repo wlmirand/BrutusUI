@@ -44,14 +44,20 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
 
             //Get the IntArray Res ID and then the Array itself
             val valuesResId = getResourceId(R.styleable.BrutusUIRadioGroup_optValues, 0)
+
+            //Dispose the StyledAttrs
+            recycle()
+
+            //Nothing to do here
+            if (textArray == null || valuesResId == 0) return@with
+
+            //Get the IntArray
             val valuesArray = resources.getIntArray(valuesResId)
 
             //Now fill the map
-            for (i in 0 until textArray.size) {
+            for (i in textArray.indices) {
                 map[valuesArray[i]] = textArray[i].toString()
             }
-
-            recycle()
         }
 
         //Now get the default value if passed
