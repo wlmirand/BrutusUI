@@ -53,6 +53,7 @@
             app:summary="TimePicker Summary"/>
 
     <william.miranda.brutusui.BrutusUIRadioGroup
+            android:id="@+id/radioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="RadioGroup Title"

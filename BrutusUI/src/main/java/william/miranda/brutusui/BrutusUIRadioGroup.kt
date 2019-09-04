@@ -51,13 +51,8 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             //Nothing to do here
             if (textArray == null || valuesResId == 0) return@with
 
-            //Get the IntArray
-            val valuesArray = resources.getIntArray(valuesResId)
-
-            //Now fill the map
-            for (i in textArray.indices) {
-                map[valuesArray[i]] = textArray[i].toString()
-            }
+            //Update the Values
+            setOptions(resources.getIntArray(valuesResId), textArray)
         }
 
         //Now get the default value if passed
@@ -69,6 +64,33 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             value.set(getPairFromValue(newValue))
 
             recycle()
+        }
+    }
+
+    /**
+     * Update the Internal Map
+     */
+    fun setOptions(values: IntArray, texts: Array<CharSequence>) {
+        //Clear the Map
+        map.clear()
+
+        //Put the new Values
+        for (i in texts.indices) {
+            map[values[i]] = texts[i].toString()
+        }
+    }
+
+    /**
+     * Update the Internal Map
+     * Override for String Array
+     */
+    fun setOptions(values: IntArray, texts: Array<String>) {
+        //Clear the Map
+        map.clear()
+
+        //Put the new Values
+        for (i in texts.indices) {
+            map[values[i]] = texts[i]
         }
     }
 
