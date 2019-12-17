@@ -9,7 +9,8 @@ import william.miranda.brutusui.databinding.BrutusuiGenericBinding
 /**
  * Class to display a List of items to be chosen
  */
-class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Pair<Int, String>>(context, attrs) {
+class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
+    BrutusUIGeneric<Pair<Int, String>>(context, attrs) {
 
     /**
      * Map that contains the Values -> Strings
@@ -45,14 +46,14 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             //Get the IntArray Res ID and then the Array itself
             val valuesResId = getResourceId(R.styleable.BrutusUIRadioGroup_optValues, 0)
 
-            //Dispose the StyledAttrs
-            recycle()
-
             //Nothing to do here
             if (textArray == null || valuesResId == 0) return@with
 
             //Update the Values
             setOptions(resources.getIntArray(valuesResId), textArray)
+
+            //Dispose the StyledAttrs
+            recycle()
         }
 
         //Now get the default value if passed
@@ -63,6 +64,7 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             //Set it
             value.set(getPairFromValue(newValue))
 
+            //Dispose the StyledAttrs
             recycle()
         }
     }
@@ -136,7 +138,7 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) : BrutusUIGeneri
     /**
      * Return the Pair from the selected Value
      */
-    private fun getPairFromValue(newValue: Int) : Pair<Int, String>? {
+    private fun getPairFromValue(newValue: Int): Pair<Int, String>? {
         //If valid, assign the Pair to the value
         return newValue.takeIf { it != -1 }?.let { validValue ->
             map[validValue]?.let {
