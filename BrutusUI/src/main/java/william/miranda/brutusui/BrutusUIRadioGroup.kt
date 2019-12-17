@@ -10,7 +10,7 @@ import william.miranda.brutusui.databinding.BrutusuiGenericBinding
  * Class to display a List of items to be chosen
  */
 class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
-    BrutusUIGeneric<Pair<Int, String>>(context, attrs) {
+    BrutusUIGeneric<Int>(context, attrs) {
 
     /**
      * Map that contains the Values -> Strings
@@ -20,8 +20,8 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
     /**
      * Render Function to put the String in the Summary
      */
-    override var renderFunction: (Pair<Int, String>) -> String? = {
-        value.get()?.second
+    override var renderFunction: (Int) -> String? = {
+        map[it]
     }
 
     /**
@@ -62,7 +62,7 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
             val newValue = getInt(R.styleable.BrutusUIGeneric_value, -1)
 
             //Set it
-            value.set(getPairFromValue(newValue))
+            value.set(newValue)
 
             //Dispose the StyledAttrs
             recycle()
@@ -121,7 +121,7 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
 
             setPositiveButton(android.R.string.ok) { _, _ ->
                 //Update the Selected Pair
-                value.set(selectedPair)
+                value.set(selectedPair?.first)
             }
 
             //setPositiveButton(android.R.string.ok) { _, _ -> /*values?.let { value.set(it[selected]) }*/ }
@@ -133,17 +133,5 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
     /**
      * Get the Selected Index from the Selected Pair
      */
-    private fun getSelectedIndex() = map.toList().indexOf(value.get())
-
-    /**
-     * Return the Pair from the selected Value
-     */
-    private fun getPairFromValue(newValue: Int): Pair<Int, String>? {
-        //If valid, assign the Pair to the value
-        return newValue.takeIf { it != -1 }?.let { validValue ->
-            map[validValue]?.let {
-                Pair(validValue, it)
-            }
-        }
-    }
+    private fun getSelectedIndex() = map.toList().indexOf(selectedPair)
 }
