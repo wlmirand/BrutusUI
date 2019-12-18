@@ -8,15 +8,28 @@ import android.widget.DatePicker
 import william.miranda.brutusui.databinding.BrutusuiGenericBinding
 import java.util.*
 
+/**
+ * Data class to hold the Composite value
+ */
+data class Date(
+    val year: Int,
+    val month: Int,
+    val day: Int
+)
+
+/**
+ * Component class
+ */
 class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
-    BrutusUIGeneric<Triple<Int, Int, Int>>(context, attrs) {
+    BrutusUIGeneric<Date>(context, attrs) {
 
     /**
      * Listener for DatePickerDialog
      */
-    private val listener: (DatePicker, Int, Int, Int) -> Unit = { _, year: Int, month: Int, day: Int ->
-        value.set(Triple(year, month, day))
-    }
+    private val listener: (DatePicker, Int, Int, Int) -> Unit =
+        { _, year: Int, month: Int, day: Int ->
+            value.set(Date(year, month, day))
+        }
 
     /**
      * Formatter
@@ -28,23 +41,20 @@ class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
         }
 
     /**
-     * Render the time
+     * Render the Value
      */
-    override var renderFunction: (Triple<Int, Int, Int>) -> String? = {
-
-        it.takeIf { it.first != -1 && it.second != -1 && it.third != -1 }?.let {
-            val date = Calendar.getInstance().run {
-                set(Calendar.YEAR, it.first)
-                set(Calendar.MONTH, it.second)
-                set(Calendar.DAY_OF_MONTH, it.third)
-                set(Calendar.HOUR_OF_DAY, 0)
-                set(Calendar.MINUTE, 0)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-                time
-            }
-            dateFormatter.format(date)
+    override var renderFunction: (Date) -> String? = {
+        val date = Calendar.getInstance().run {
+            set(Calendar.YEAR, it.year)
+            set(Calendar.MONTH, it.month)
+            set(Calendar.DAY_OF_MONTH, it.day)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            time
         }
+        dateFormatter.format(date)
     }
 
     init {
@@ -66,7 +76,7 @@ class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
             if (day == -1 || month == -1 || year == -1) return@with
 
             //If set, we update the value
-            value.set(Triple(year, month, day))
+            value.set(Date(year, month, day))
         }
     }
 
@@ -87,9 +97,9 @@ class BrutusUIDatePicker(context: Context, attrs: AttributeSet) :
         val datePickerDialog = DatePickerDialog(
             context,
             listener,
-            value.get()?.first ?: calendar.get(Calendar.YEAR),
-            value.get()?.second ?: calendar.get(Calendar.MONTH),
-            value.get()?.third ?: calendar.get(Calendar.DAY_OF_MONTH)
+            value.get()?.year ?: calendar.get(Calendar.YEAR),
+            value.get()?.month ?: calendar.get(Calendar.MONTH),
+            value.get()?.day ?: calendar.get(Calendar.DAY_OF_MONTH)
         )
 
         datePickerDialog.setTitle(title.get())

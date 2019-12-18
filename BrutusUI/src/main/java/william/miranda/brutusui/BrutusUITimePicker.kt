@@ -8,13 +8,25 @@ import android.widget.TimePicker
 import william.miranda.brutusui.databinding.BrutusuiGenericBinding
 import java.util.*
 
-class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneric<Pair<Int, Int>>(context, attrs) {
+/**
+ * Data class to hold the Composite value
+ */
+data class Time(
+    val hour: Int,
+    val minute: Int
+)
+
+/**
+ * Component Class
+ */
+class BrutusUITimePicker(context: Context, attrs: AttributeSet) :
+    BrutusUIGeneric<Time>(context, attrs) {
 
     /**
      * Listener for TimePickerDialog
      */
     private val listener: (TimePicker, Int, Int) -> Unit = { _, hora: Int, minuto: Int ->
-        value.set(Pair(hora, minuto))
+        value.set(Time(hora, minuto))
     }
 
     /**
@@ -29,18 +41,15 @@ class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneri
     /**
      * Render the time
      */
-    override var renderFunction: (Pair<Int, Int>) -> String? = {
-
-        it.takeIf { it.first != -1 && it.second != -1 }?.let {
-            val date = Calendar.getInstance().run {
-                set(Calendar.HOUR_OF_DAY, it.first)
-                set(Calendar.MINUTE, it.second)
-                set(Calendar.SECOND, 0)
-                set(Calendar.MILLISECOND, 0)
-                time
-            }
-            timeFormatter.format(date)
+    override var renderFunction: (Time) -> String? = {
+        val date = Calendar.getInstance().run {
+            set(Calendar.HOUR_OF_DAY, it.hour)
+            set(Calendar.MINUTE, it.minute)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+            time
         }
+        timeFormatter.format(date)
     }
 
     init {
@@ -57,7 +66,7 @@ class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneri
             val minute = getInt(R.styleable.BrutusUITimePicker_minute, -1)
             recycle()
 
-            value.set(Pair(hour, minute))
+            value.set(Time(hour, minute))
         }
     }
 
@@ -76,8 +85,8 @@ class BrutusUITimePicker(context: Context, attrs: AttributeSet) : BrutusUIGeneri
         val timePickerDialog = TimePickerDialog(
             context,
             listener,
-            value.get()?.first ?: 0,
-            value.get()?.second ?: 0,
+            value.get()?.hour ?: 0,
+            value.get()?.minute ?: 0,
             android.text.format.DateFormat.is24HourFormat(context)
         )
 
