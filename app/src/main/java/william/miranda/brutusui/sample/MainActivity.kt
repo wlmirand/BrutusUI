@@ -14,6 +14,7 @@ class MainActivity : AppCompatActivity() {
         val values = intArrayOf(1, 2, 3)
         val texts = arrayOf("Text 1", "Text 2", "Text 3")
         radioGroup.setOptions(values, texts)
+        radioGroup.value.set(2)
 
         button.setOnClickListener {
             Log.d("BrutusUI", "${dayOfWeek.value.get()}")
