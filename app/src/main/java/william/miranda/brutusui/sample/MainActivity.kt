@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         radioGroup.setOptions(values, texts)
 
         button.setOnClickListener {
-            Log.d("BrutusUI", "${radioGroup.value.get()}")
+            Log.d("BrutusUI", "${dayOfWeek.value.get()}")
         }
     }
 }

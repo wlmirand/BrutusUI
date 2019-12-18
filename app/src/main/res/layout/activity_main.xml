@@ -33,12 +33,6 @@
             app:title="EditFloat Title"
             app:summary="EditFloat Summary"/>
 
-    <william.miranda.brutusui.BrutusUIDayOfWeek
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title="DayOfWeek Title"
-            app:summary="DayOfWeek Summary"/>
-
     <william.miranda.brutusui.BrutusUIDatePicker
             android:id="@+id/datePicker"
             android:layout_width="match_parent"
@@ -58,6 +52,13 @@
             android:layout_height="wrap_content"
             app:title="RadioGroup Title"
             app:summary="RadioGroup Summary"/>
+
+    <william.miranda.brutusui.BrutusUIDayOfWeek
+            android:id="@+id/dayOfWeek"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="Day Of Week Title"
+            app:summary="Day Of Week Summary"/>
 
     <Button
             android:id="@+id/button"
