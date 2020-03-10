@@ -156,4 +156,14 @@ class BrutusUIRadioGroup(context: Context, attrs: AttributeSet) :
 
         return list.indexOf(selectedPair)
     }
+
+    /**
+     * Put an Enum List into a RadioGroup
+     * Because enums may have an ugly name, we also use the Render Function
+     */
+    public inline fun <reified T : Enum<T>> setEnum() {
+        val values = IntArray(enumValues<T>().size) { it }
+        val texts = Array(enumValues<T>().size) { renderFunction(it) ?: enumValues<T>()[it].name }
+        this.setOptions(values, texts)
+    }
 }
